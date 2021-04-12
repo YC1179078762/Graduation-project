@@ -15,6 +15,7 @@ import Catalogue from '../views/book/catalogue'
 import Bookstore from '../views/book/bookstore'
 import Create from '../views/create/create'
 import CreateData from '../views/create/createdata'
+import CreateTag from '../views/create/createtag'
 Vue.use(VueRouter)
 
 const routes = [
@@ -35,6 +36,13 @@ const routes = [
   {
     path: '/create',
     component: Create,
+    meta: {
+      keepAlive: false,
+    }
+  }
+  ,{
+    path: '/createtag',
+    component: CreateTag,
     meta: {
       keepAlive: false,
     }

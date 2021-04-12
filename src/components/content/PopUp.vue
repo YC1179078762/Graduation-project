@@ -2,7 +2,11 @@
   <div>
     <div class="kong"></div>
     <div class="popup-search">
-      <van-search shape="round" @click="$router.push('/search')" placeholder="请输入搜索关键词">
+      <van-search
+        shape="round"
+        @click="$router.push('/search')"
+        placeholder="请输入搜索关键词"
+      >
         <template #left>
           <van-icon @click="showPopup1" size="30px" name="friends-o" />
         </template>
@@ -15,11 +19,13 @@
       :style="{ width: '75%', height: '100%' }"
     >
       <div class="popup-login">
-       <div v-show="!login">
-          <span class="iconfont icon-wode"></span> <span @click="this.$router.push('/login')">立即登录</span>
-        </div> 
+        <div v-show="!login">
+          <span class="iconfont icon-wode"></span>
+          <span @click="$router.push('/login')">立即登录</span>
+        </div>
         <div v-show="login">
-          <span class="iconfont icon-wode"></span> <span>{{uesrname}}</span>
+          <span class="iconfont icon-wode"></span>
+          <span>{{ userC_username }}</span>
         </div>
       </div>
       <div class="popup-main">
@@ -40,7 +46,7 @@
           <van-cell title="个性装扮" is-link />
         </div>
         <div class="popup-main-title">
-          <van-cell title="关闭music" />
+          <van-cell title="关闭music" @click="tuichu()" />
         </div>
       </div>
     </van-popup>
@@ -48,7 +54,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import { mapGetters } from "vuex";
 export default {
   name: "popup-icon",
   props: {
@@ -59,29 +65,37 @@ export default {
       xixi: false,
     };
   },
-  computed:{
-    ...mapGetters([
-      "login"
-    ])
+  computed: {
+    ...mapGetters(["login", "userC_username"]),
   },
   methods: {
-    showName() {
-      if (id.name != "") {
-        this.login == false;
-      } else {
-        this.login == true;
-      }
-    },
     showPopup1() {
-      this.xixi= true;
-      console.log("123")
+      this.xixi = true;
+      console.log("123");
+    },
+    tuichu() {
+      console.log(1);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user_tel");
+      localStorage.removeItem("user_pwd");
+      localStorage.removeItem("username");
+      localStorage.removeItem("u_id");
+      localStorage.removeItem("creator");
+      this.$store.commit("setLogin", false);
+      this.$store.commit("setToken", localStorage.getItem("token"));
+      this.$store.commit(
+        "setUserC_backgroundUrl",
+        localStorage.getItem("backgroundUrl")
+      );
+      this.$store.commit("setUserC_username", localStorage.getItem("username"));
+      this.$store.commit("setUserC_u_id", localStorage.getItem("u_id"))
     },
   },
 };
 </script>
 
 <style lang="less" scoped>
-.kong{
+.kong {
   width: 100%;
   height: 55px;
 }
@@ -102,18 +116,18 @@ export default {
 .popup-search {
   width: 100%;
   height: 55px;
-   top:0;
+  top: 0;
   position: fixed;
   z-index: 10;
 }
-.popup-login{
-    margin:10px 5% 0 5%;
-    height: 30px;
-    display: flex;
-    font-size: 14px;
-    align-items: center;
-    span{
-        margin: 0px 5px;
-    }
+.popup-login {
+  margin: 10px 5% 0 5%;
+  height: 30px;
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+  span {
+    margin: 0px 5px;
+  }
 }
 </style>

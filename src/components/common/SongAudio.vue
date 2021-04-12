@@ -36,7 +36,6 @@ export default {
     ]),
   },
   watch: {
-    // 得到id
     //监听
     isPlay: function () {
       this.togglePlay();

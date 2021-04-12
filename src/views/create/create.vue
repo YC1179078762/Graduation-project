@@ -9,17 +9,20 @@
         <span class="iconfont icon-fanhui"></span>
       </div>
       <div class="song-title">歌单</div>
+      <div class="right" @click="baocun()">保存</div>
     </div>
     <!-- 歌单内容 -->
     <div class="song-neirong" @click="xiugai()">
       <div class="left">
-        <img :src="data.url" alt="">
+        <img v-if="!pic" src="../../assets/img/user.jpg" alt="" />
+        <img v-if="pic" :src="pic" alt="" />
       </div>
       <div class="right">
-        <div class="song-name" :v-text="data.name" ></div>
+        <div v-if="!name" class="song-name">随音乐而动</div>
+        <div v-if="name" class="song-name">{{ name }}</div>
         <div class="song-author">
-          <img class="author-pic" src="avatarUrl" alt />
-          <span class="author-name">123</span>
+          <img class="author-pic" src="../../assets/img/pic.jpg" alt />
+          <span class="author-name">{{ userC_username }}</span>
         </div>
       </div>
     </div>
@@ -29,11 +32,11 @@
         <div class="song-quanbu">
           <van-icon style="" name="play" />
           <span style="font-weight: 600; font-size: 16px">播放全部</span>
-          <a style="font-size: 16px; color: #a3a3a3"> ({{ aaa }})</a>
+          <a style="font-size: 16px; color: #a3a3a3"> ()</a>
         </div>
       </van-sticky>
-      <div style="height: 10px"></div>
-      <SmallSong :data="songlist"></SmallSong>
+
+      <!-- <SmallSong :data="songlist"></SmallSong> -->
     </div>
     <PlayMini></PlayMini>
   </div>
@@ -50,43 +53,48 @@ export default {
   },
   data() {
     return {
-      file: [],
       showr: false,
-      data:{
-          url:'',
-          name:'',
-          tags:'',
-          text:'',
-      }
+      pic: [],
+      name: "心随你动",
+      text: "",
+      tags: "",
+      creator: "",
     };
   },
+  mounted() {
+    var num = this.$store.getters.createPic;
+    this.tags = this.$store.getters.createTags;
+    this.text = this.$store.getters.createText;
+    this.name = this.$store.getters.createName;
+    this.creator = localStorage.getItem("creator");
+    this.pic = num[0].content
+    console.log(localStorage.getItem("creator"))
+  },
   computed: {
-    ...mapGetters([
-      "isPlay", // 播放状态
-      "playButtonUrl", // 播放状态的图标
-      "id", // 音乐id
-      "title", // 歌名
-      "artist", // 歌手名
-      "picUrl", // 歌曲图片
-      "curTime", // 当前音乐的播放位置
-      "duration", // 音乐时长
-      "lrc", // 歌词
-      "songsList", // 当前歌单列表
-      "listIndex", // 当前歌曲在歌曲列表的位置
-      "autoNext", // 用于触发自动播放下一首
-    ]),
+    ...mapGetters(["userC_username"]),
   },
   methods: {
     async toplay(val) {
-      const data = await this.$axios.get();
-    },
-    showname() {
-      this.showr = true;
+      
     },
     afterRead() {},
-    xiugai(){
-        this.$router.push('/createdata')
-    }
+    xiugai() {
+      this.$router.push("/createdata");
+    },
+    async baocun() {
+      const data = await this.$axios.post(
+        "http://192.168.0.174:3000/upload/songSheet",
+        {
+          params: {
+            Sl_name: this.name,
+            Sl_coverImgUrl: this.pic,
+            Sl_tags: this.tags,
+            Sl_creator: this.creator,
+            Sl_tracks: this.tracks,
+          },
+        }
+      );
+    },
   },
 };
 </script>
@@ -149,6 +157,10 @@ export default {
       font-size: 20px;
     }
   }
+  .right {
+    font-weight: 600;
+    margin-right: 10px;
+  }
 }
 .song-neirong {
   z-index: 20;
@@ -159,12 +171,20 @@ export default {
   .left {
     width: 120px;
     z-index: 100;
+    img {
+      width: 120px;
+      height: 120px;
+       z-index: 101;
+    }
   }
   .right {
+    margin-left: 10px;
     color: white;
+    flex: 1;
     height: 110px;
     .song-name {
-      margin-top: 5px;
+      font-size: 16px;
+      height: 20px;
       padding: 0 10%;
     }
     .song-author {

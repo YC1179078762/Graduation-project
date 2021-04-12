@@ -14,7 +14,7 @@
         </div> -->
         <div class="loading-true" v-show="searchsongtrue">
           <SmallSong :data="this.song"></SmallSong>
-          {{ daima }}{{song}}
+          
         </div>
       </van-tab>
       <van-tab title="歌手" class="title">

@@ -13,8 +13,9 @@ export default new Vuex.Store({
     login:false,
     search:'',
     user:{
-      name:'',
-      id:'',
+      C_u_id:'',
+      C_backgroundUrl:'',
+      C_username:'',
     },
     playing: {
       isPlay: false, // 播放状态
@@ -33,13 +34,20 @@ export default new Vuex.Store({
       listIndex: -1 // 当前歌曲在歌曲列表的位置
     },
     create:{
-      img:'',
+      pic:["data:image/jpeg;base64,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"],
       name:'',
       tags:'',
       text:'',
     }
   },
   mutations: {
+    setUserC_backgroundUrl:(state,C_backgroundUrl)=>{state.user.C_backgroundUrl=C_backgroundUrl},
+    setUserC_u_id:(state,C_u_id)=>{state.user.C_u_id=C_u_id},
+    setUserC_username:(state,C_username)=>{state.user.C_username=C_username},
+    setCreatePic:(state,pic)=>{state.create.pic=pic},
+    setCreateTags:(state,tags)=>{state.create.tags=tags},
+    setCreateName:(state,name)=>{state.create.name=name},
+    setCreateText:(state,text)=>{state.create.text=text},
     setToken:(state,token)=>{state.token=token},
     setSearch:(state,search)=>{state.search=search},
     setUserName:(state,name)=>{state.user.name=name},
@@ -69,6 +77,14 @@ export default new Vuex.Store({
   modules: {
   },
   getters: {
+    userC_backgroundUrl:state=>state.user.C_backgroundUrl,
+    userC_username:state=>state.user.C_username,
+    userC_u_id:state=>state.user.C_u_id,
+    create:state=>state.create,
+    createName:state=>state.create.name,
+    createText:state=>state.create.text,
+    createPic:state=>state.create.pic,
+    createTags:state=>state.create.tags,
     token:state=>state.token,
     search:state=>state.search,
     userName:state=>state.user.name,

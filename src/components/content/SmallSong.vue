@@ -2,7 +2,7 @@
   <div>
     <div class="song-item" v-for="(item, index) in data" :key="index">
       <div class="item-xuhao">{{ index + 1 }}</div>
-      <div class="item-name" @click="toplay(item.id, index)">
+      <div class="item-name" @click="toplay(index)">
         <span
           ><b>{{ item.So_name }}</b></span
         >
@@ -39,8 +39,8 @@ export default {
     ...mapGetters(["songsList", "id"]),
   },
   methods: {
-    async toplay(id, index) {
-      console.log(this.songsList);
+    async toplay(index) {
+      console.log(index);
       this.$store.commit("setSongsList", this.data);
       this.$store.commit("setListIndex", index);
       this.$store.commit("setIsList", true);

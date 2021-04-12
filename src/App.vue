@@ -23,6 +23,15 @@ export default {
   },
   created() {
     this.$store.commit("setToken", localStorage.getItem("token"));
+    this.$store.commit(
+      "setUserC_backgroundUrl",
+      localStorage.getItem("backgroundUrl")
+    );
+    this.$store.commit("setUserC_username", localStorage.getItem("username"));
+    this.$store.commit("setUserC_u_id", localStorage.getItem("u_id"));
+    if(localStorage.getItem("token")!=''&&localStorage.getItem("username")!=''){
+       this.$store.commit("setLogin", true);
+    }
   },
   mounted() {
     if (this.songsList.length == 0) {

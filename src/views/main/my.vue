@@ -6,7 +6,7 @@
       </div>
       <div class="user-login">
         <span v-show="!login" @click="$router.push('/login')">立即登录</span>
-        <span v-show="login">{{ userName }}</span>
+        <span v-show="login">{{ userC_username }}</span>
       </div>
     </div>
     <div class="my-nav-icon">
@@ -59,13 +59,17 @@
       </h2>
       <div class="create-songlist">
         <div class="create-head">
-          <div class="create-head-title">创建歌单({{ songlists }}个)</div>
+          <div class="create-head-title">创建歌单({{ userCreate.length }}个)</div>
           <div class="create-head-icon" @click="addSongLists()">
             <van-icon name="plus" />
           </div>
           <div class="create-head-icon">
             <span class="iconfont icon-gengduo"></span>
           </div>
+        </div>
+        <div @click="addSongLists(index)" v-for="(item,index) in userCreate" :key="index">
+          <img :src="item.pic" alt="">
+          <div>{{item.name}}</div>
         </div>
       </div>
       <div class="collection-songlist">
@@ -94,16 +98,17 @@ export default {
   },
   data() {
     return {
-      songlists: 3,
+     userCreate:[],
     };
   },
   computed: {
-    ...mapGetters(["login", "userName", "token"]),
+    ...mapGetters(["login", "userName", "token","userC_username"]),
   },
   mounted(){
   },
   methods: {
     addSongLists() {
+      console.log(this.token)
       if (this.token!='') {
         this.$router.push('/create');
       } else {

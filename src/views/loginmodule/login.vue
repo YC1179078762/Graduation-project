@@ -75,12 +75,34 @@ export default {
           U_tel: U_tel,
           U_password: U_password,
         });
-       console.log(data.data)
-       var a= parseInt( data.data.msg)
+        console.log(data.data);
+        var a = parseInt(data.data.msg);
         switch (a) {
           case 103:
             localStorage.setItem("token", data.data.token);
+            console.log(localStorage.getItem("token"))
+            localStorage.setItem("user_tel", U_tel);
+            localStorage.setItem("user_pwd", U_password);
+            localStorage.setItem("username", data.data.creator.C_username);
+            localStorage.setItem("u_id", data.data.creator.C_u_id);
+            localStorage.setItem("creator", data.data.creator);
+            var a = localStorage.getItem("creator")
+            console.log(a)
+            localStorage.setItem(
+              "backgroundUrl",
+              data.data.creator.C_backgroundUrl
+            );
             this.$store.commit("setToken", localStorage.getItem("token"));
+            this.$store.commit(
+              "setUserC_backgroundUrl",
+              localStorage.getItem("backgroundUrl")
+            );
+            this.$store.commit(
+              "setUserC_username",
+              localStorage.getItem("username")
+            );
+            this.$store.commit("setUserC_u_id", localStorage.getItem("u_id"));
+            this.$store.commit("setLogin", true);
             this.$router.push("/");
             break;
           default:

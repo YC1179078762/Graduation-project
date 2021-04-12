@@ -167,6 +167,8 @@ export default {
   },
   mounted() {
     this.getsrc();
+    console.log(this.songsList);
+    console.log(this.listIndex);
   },
   methods: {
     togglePlay() {
@@ -218,11 +220,11 @@ export default {
     },
     //获取歌词
     async getsrc() {
-      const data = await this.$axios.get(
-        "https://ycmusic.obs.cn-southwest-2.myhuaweicloud.com:443/lrc/100001.lrc?AccessKeyId=RZHGLYWRGMEBBGEW4ZY2&Expires=1633178642&Signature=8lKaMTUWih3VPh%2BG69B5aOXqwBg%3D"
-      );
-      console.log(data.data);
-      this.parseLyric(data.data);
+      // const data = await this.$axios.get(
+      //   "https://ycmusic.obs.cn-southwest-2.myhuaweicloud.com:443/lrc/100001.lrc?AccessKeyId=RZHGLYWRGMEBBGEW4ZY2&Expires=1633178642&Signature=8lKaMTUWih3VPh%2BG69B5aOXqwBg%3D"
+      // );
+      // console.log(data.data);
+      // this.parseLyric(data.data);
     },
     //处理歌词
     parseLyric(text) {
@@ -278,15 +280,47 @@ export default {
     },
     // 上一首
     prev() {
+      console.log(this.listIndex);
       if (this.listIndex !== -1 && this.songsList.length > 1) {
         if (this.listIndex > 0) {
+          this.$store.commit(
+            "setPicUrl",
+            this.songsList[this.listIndex - 1].So_iurl
+          );
+          this.$store.commit(
+            "setUrl",
+            this.songsList[this.listIndex - 1].So_murl
+          );
+          this.$store.commit(
+            "setTitle",
+            this.songsList[this.listIndex - 1].So_name
+          );
+          this.$store.commit(
+            "setArtist",
+            this.songsList[this.listIndex - 1].So_singer
+          );
           this.$store.commit("setListIndex", this.listIndex - 1);
-          this.toPlay(this.songsList[this.listIndex].id);
         } else {
           this.$store.commit("setListIndex", this.songsList.length - 1);
-          this.toPlay(this.songsList[this.listIndex].id);
+          this.$store.commit(
+            "setPicUrl",
+            this.songsList[this.songsList.length - 1].So_iurl
+          );
+          this.$store.commit(
+            "setUrl",
+            this.songsList[this.songsList.length - 1].So_murl
+          );
+          this.$store.commit(
+            "setTitle",
+            this.songsList[this.songsList.length - 1].So_name
+          );
+          this.$store.commit(
+            "setArtist",
+            this.songsList[this.songsList.length - 1].So_singer
+          );
         }
       }
+      // console.log(this.songsList[this.listIndex])
     },
     playPattern() {
       this.w++;
@@ -296,16 +330,37 @@ export default {
     },
     // 下一首
     next() {
+      console.log(this.listIndex);
       if (this.listIndex !== -1 && this.songsList.length > 1) {
-        // console.log('下一首')
+        console.log("下一首");
         if (this.listIndex < this.songsList.length - 1) {
-          this.toPlay(this.songsList[this.listIndex + 1].id);
+          this.$store.commit(
+            "setPicUrl",
+            this.songsList[this.listIndex + 1].So_iurl
+          );
+          this.$store.commit(
+            "setUrl",
+            this.songsList[this.listIndex + 1].So_murl
+          );
+          this.$store.commit(
+            "setTitle",
+            this.songsList[this.listIndex + 1].So_name
+          );
+          this.$store.commit(
+            "setArtist",
+            this.songsList[this.listIndex + 1].So_singer
+          );
           this.$store.commit("setListIndex", this.listIndex + 1);
         } else {
           this.$store.commit("setListIndex", 0);
+          this.$store.commit("setPicUrl", this.songsList[0].So_iurl);
+          this.$store.commit("setUrl", this.songsList[0].So_murl);
+          this.$store.commit("setTitle", this.songsList[0].So_name);
+          this.$store.commit("setArtist", this.songsList[0].So_singer);
           this.toPlay(this.songsList[0].id);
         }
       }
+      //  console.log(this.songsList[this.listIndex])
     },
     // 选中播放
     toPlay(id) {
